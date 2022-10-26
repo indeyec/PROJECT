@@ -1,0 +1,38 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="E302" />
+          <option value="E111" />
+          <option value="E303" />
+          <option value="E225" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="super.dispatch" />
+          <option value="super.post" />
+          <option value="super.clean" />
+          <option value="super.save" />
+          <option value="bboard.settings" />
+          <option value="bboard.main.urls.include" />
+          <option value="Bb" />
+          <option value="super.delete" />
+          <option value="bboard.main.views.Comment" />
+          <option value="bboard.main.models.Comment" />
+          <option value="locallibrary.catalog.test.test_models.catalog" />
+          <option value="locallibrary.catalog.test.test_forms.catalog" />
+          <option value="locallibrary.catalog.test.test_views.catalog" />
+          <option value="locallibrary.catalog.test.test_views.forms" />
+          <option value="django.contrib.auth.views.Register" />
+          <option value="taskmanager.main.urls.Register" />
+          <option value="taskmanager.main.views.Register" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
