@@ -1,8 +1,12 @@
-from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django import forms
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
 
 from .models import AdvUser
+
 
 
 class UserRegisterForm(UserCreationForm):
@@ -19,3 +23,15 @@ class UserRegisterForm(UserCreationForm):
     class Meta:
         model = AdvUser
         fields = ('last_name', 'first_name', 'middle_name', 'username', 'email', 'password1', 'password2', 'checkbox')
+
+
+class ChangeUserInfoForm(forms.ModelForm):
+   email = forms.EmailField(required=True,
+                            label='Адрес электронной почты')
+
+   class Meta:
+       model = AdvUser
+       fields = ('username', 'email', 'first_name', 'last_name')
+
+
+
