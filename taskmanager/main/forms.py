@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-
 class UserRegisterForm(UserCreationForm):
     last_name = forms.CharField(label='Фамилия', widget=forms.TextInput(attrs={'class': 'form-control'}))
     first_name = forms.CharField(label='Имя', widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -14,7 +13,15 @@ class UserRegisterForm(UserCreationForm):
     checkbox = forms.BooleanField(label='Согласие на обработку персональных данных')
 
 
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(max_length=254, help_text='This field is required')
+
+
+
     class Meta:
         model = User
         fields = ('last_name', 'first_name', 'middle_name', 'username', 'email', 'password1', 'password2', 'checkbox')
+
+
+        fields = ('username', 'email', 'password1', 'password2',)
 

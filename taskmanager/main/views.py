@@ -1,8 +1,8 @@
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib import messages
 from .forms import UserRegisterForm
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 
 
 def index(request):
