@@ -14,6 +14,7 @@ from django.contrib.auth import logout
 from django.contrib import messages
 
 
+
 def index(request):
     return render(request, 'main/index.html')
 
@@ -93,3 +94,5 @@ class DeleteUserView(LoginRequiredMixin, DeleteView):
        if not queryset:
            queryset = self.get_queryset()
        return get_object_or_404(queryset, pk=self.user_id)
+
+

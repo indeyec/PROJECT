@@ -8,6 +8,7 @@ from .views import PasswordChangeView
 from .views import DeleteUserView
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('about', views.about, name='about'),
@@ -21,5 +22,7 @@ urlpatterns = [
     path('accounts/profile/', profile, name='profile'),
     path('accounts/password/change/', PasswordChangeView.as_view(), name='password_change'),
     path('accounts/profile/delete/', DeleteUserView.as_view(), name='profile_delete'),
+
+
 
 ]
