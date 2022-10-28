@@ -4,9 +4,10 @@ from django.contrib.auth.models import User
 from django import forms
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-
+from .models import SuperRubric, SubRubric
 from .models import AdvUser
-
+from .models import Bb, AdditionalImage
+from django.forms import inlineformset_factory
 
 
 class UserRegisterForm(UserCreationForm):
@@ -35,6 +36,30 @@ class ChangeUserInfoForm(forms.ModelForm):
 
 
 
+class SubRubricForm(forms.ModelForm):
+   super_rubric = forms.ModelChoiceField(
+       queryset=SuperRubric.object.all(), empty_label=None,
+       label='Надрубрика', required=True
+   )
+
+   class Meta:
+       model = SubRubric
+       fields = '__all__'
+
+
+
+class SearchForm(forms.Form):
+   keyword = forms.CharField(required=False, max_length=20, label='')
+
+
+class BbForm(forms.ModelForm):
+   class Meta:
+       model = Bb
+       fields = '__all__'
+       widgets = {'author': forms.HiddenInput}
+
+
+AIFormSet = inlineformset_factory(Bb, AdditionalImage, fields='__all__')
 
 
 
