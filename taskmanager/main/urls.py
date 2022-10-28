@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .views import profile, profile_bb_change
+from .views import profile
 from .views import LogoutView
 from .views import ChangeUserInfoView
 from .views import PasswordChangeView
@@ -10,6 +10,7 @@ from .views import by_rubric
 from .views import detail
 from .views import profile_bb_add
 from .views import profile_bb_delete
+from .views import profile_bb_change
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -18,11 +18,14 @@ from .forms import SearchForm
 from .models import SubRubric, Bb
 
 
-
 def index(request):
+    return render(request, 'main/index.html')
+
+
+def profile(request):
     bbs = Bb.objects.filter(is_active=True)[:4]
     context = {'bbs': bbs}
-    return render(request, 'main/index.html', context)
+    return render(request, 'main/profile.html', context)
 
 
 def about(request):
@@ -51,10 +54,11 @@ class LoginView(LoginView):
 
 @login_required
 def profile(request):
-   return render(request, 'main/profile.html')
+    return render(request, 'main/profile.html')
+
 
 class LogoutView(LoginRequiredMixin, LogoutView):
-   template_name = 'main/logout.html'
+    template_name = 'main/logout.html'
 
 
 class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin,
@@ -76,89 +80,84 @@ class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin,
 
 
 class PasswordChangeView(SuccessMessageMixin, LoginRequiredMixin,
-                          PasswordChangeView):
-   template_name = 'main/password_change.html'
-   success_url = reverse_lazy('main:profile')
-   success_message = 'Пароль пользователя изменен'
+                         PasswordChangeView):
+    template_name = 'main/password_change.html'
+    success_url = reverse_lazy('main:profile')
+    success_message = 'Пароль пользователя изменен'
 
 
 class DeleteUserView(LoginRequiredMixin, DeleteView):
-   model = AdvUser
-   template_name = 'main/delete_user.html'
-   success_url = reverse_lazy('main:index')
+    model = AdvUser
+    template_name = 'main/delete_user.html'
+    success_url = reverse_lazy('main:index')
 
-   def dispatch(self, request, *args, **kwargs):
-       self.user_id = request.user.pk
-       return super().dispatch(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        self.user_id = request.user.pk
+        return super().dispatch(request, *args, **kwargs)
 
-   def post(self, request, *args, **kwargs):
-       logout(request)
-       messages.add_message(request, messages.SUCCESS, 'Пользователь удален')
-       return super().post(request, *args, **kwargs)
+    def post(self, request, *args, **kwargs):
+        logout(request)
+        messages.add_message(request, messages.SUCCESS, 'Пользователь удален')
+        return super().post(request, *args, **kwargs)
 
-   def get_object(self, queryset=None):
-       if not queryset:
-           queryset = self.get_queryset()
-       return get_object_or_404(queryset, pk=self.user_id)
-
-
-
+    def get_object(self, queryset=None):
+        if not queryset:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, pk=self.user_id)
 
 
 def by_rubric(request, pk):
-   rubric = get_object_or_404(SubRubric, pk=pk)
-   bbs = Bb.objects.filter(is_active=True, rubric=pk)
-   if 'keyword' in request.GET:
-       keyword = request.GET['keyword']
-       q = Q(title__icontains=keyword) | Q(content__icontains=keyword)
-       bbs = bbs.filter(q)
-   else:
-       keyword = ''
-   form = SearchForm(initial={'keyword': keyword})
-   paginator = Paginator(bbs, 2)
-   if 'page' in request.GET:
-       page_num = request.GET['page']
-   else:
-       page_num = 1
-   page = paginator.get_page(page_num)
-   context = {'rubric': rubric, 'page': page, 'bbs': page.object_list, 'form': form}
-   return render(request, 'rubric/by_rubric.html', context)
+    rubric = get_object_or_404(SubRubric, pk=pk)
+    bbs = Bb.objects.filter(is_active=True, rubric=pk)
+    if 'keyword' in request.GET:
+        keyword = request.GET['keyword']
+        q = Q(title__icontains=keyword) | Q(content__icontains=keyword)
+        bbs = bbs.filter(q)
+    else:
+        keyword = ''
+    form = SearchForm(initial={'keyword': keyword})
+    paginator = Paginator(bbs, 2)
+    if 'page' in request.GET:
+        page_num = request.GET['page']
+    else:
+        page_num = 1
+    page = paginator.get_page(page_num)
+    context = {'rubric': rubric, 'page': page, 'bbs': page.object_list, 'form': form}
+    return render(request, 'rubric/by_rubric.html', context)
 
 
 def detail(request, rubric_pk, pk):
-   bb = get_object_or_404(Bb, pk=pk)
-   ais = bb.additionalimage_set.all()
-   context = {'bb': bb, 'ais': ais}
-   return render(request, 'rubric/detail.html', context)
-
-
-
+    bb = get_object_or_404(Bb, pk=pk)
+    ais = bb.additionalimage_set.all()
+    context = {'bb': bb, 'ais': ais}
+    return render(request, 'rubric/detail.html', context)
 
 
 @login_required
 def profile(request):
-   bbs = Bb.objects.filter(author=request.user.pk)
-   context = {'bbs': bbs}
-   return render(request, 'main/profile.html', context)
+    bbs = Bb.objects.filter(author=request.user.pk)
+    context = {'bbs': bbs}
+    return render(request, 'main/profile.html', context)
 
 
 @login_required
 def profile_bb_add(request):
-   if request.method == 'POST':
-       form = BbForm(request.POST, request.FILES)
-       if form.is_valid():
-           bb = form.save()
-           formset = AIFormSet(request.POST, request.FILES, instance=bb)
-           if formset.is_valid():
-               formset.save()
-               messages.add_message(request, messages.SUCCESS,
-                                    'Объявление добавлено')
-               return redirect('profile')
-   else:
-       form = BbForm(initial={'author': request.user.pk})
-       formset = AIFormSet()
-   context = {'form': form, 'formset': formset}
-   return render(request, 'rubric/profile_bb_add.html', context)
+    if request.method == 'POST':
+        form = BbForm(request.POST, request.FILES)
+        if form.is_valid():
+            bb = form.save()
+            formset = AIFormSet(request.POST, request.FILES, instance=bb)
+            if formset.is_valid():
+                formset.save()
+                messages.add_message(request, messages.SUCCESS,
+                                     'Объявление добавлено')
+                return redirect('profile')
+    else:
+        form = BbForm(initial={'author': request.user.pk})
+        formset = AIFormSet()
+    context = {'form': form, 'formset': formset}
+    return render(request, 'rubric/profile_bb_add.html', context)
+
 
 @login_required
 def profile_bb_change(request, pk):
@@ -181,16 +180,17 @@ def profile_bb_change(request, pk):
     context = {'form': form, 'formset': formset}
     return render(request, 'rubric/profile_bb_change.html', context)
 
+
 @login_required
 def profile_bb_delete(request, pk):
-   bb = get_object_or_404(Bb, pk=pk)
-   if not request.user.is_author(bb):
-       return redirect('main/profile')
-   if request.method == 'POST':
-       bb.delete()
-       messages.add_message(request, messages.SUCCESS,
-                            'Объявление удалено')
-       return redirect('profile')
-   else:
-       context = {'bb': bb}
-       return render(request, 'rubric/profile_bb_delete.html', context)
+    bb = get_object_or_404(Bb, pk=pk)
+    if not request.user.is_author(bb):
+        return redirect('main/profile')
+    if request.method == 'POST':
+        bb.delete()
+        messages.add_message(request, messages.SUCCESS,
+                             'Объявление удалено')
+        return redirect('profile')
+    else:
+        context = {'bb': bb}
+        return render(request, 'rubric/profile_bb_delete.html', context)

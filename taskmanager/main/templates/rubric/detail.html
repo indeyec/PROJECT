@@ -12,9 +12,11 @@
             <div class="col">
                 <h2>{{ bb.title }}</h2>
                 <p>{{ bb.content }}</p>
+                <p class="text-right font-italic">Cтатус {{ bb.status }}</p>
                 <p class="font-weight-bold">{{ bb.price }} руб.</p>
                 <p>{{ bb.contacts }}</p>
-                <p class="text-right font-italic">Объявление добавлено {{ bb.created_at }}</p>
+
+                <p class="text-right font-italic">Заявка добавлена {{ bb.created_at }}</p>
             </div>
         </div>
     </div>
@@ -31,7 +33,7 @@
     <div class="media-body">
         Рубрика: {{ bb.rubric }}
         <p class="text-right mt-2">
-            <a href="{% url 'profile_bb_change' pk=bb.pk %}">Исправить объявление</a>
+            <a href="{% url 'profile_bb_change' pk=bb.pk %}">Исправить заявку</a>
             <a href="{% url 'profile_bb_delete' pk=bb.pk %}">Удалить</a>
         </p>
     </div>

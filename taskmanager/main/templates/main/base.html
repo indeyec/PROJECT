@@ -27,7 +27,7 @@
                    aria-expanded="false">Профиль</a>
                 <div class="dropdown-menu">
 
-                    <a class="dropdown-item" href="{% url 'profile' %}">Мои объявления</a>
+                    <a class="dropdown-item" href="{% url 'profile' %}">Мои Заявки</a>
                     <a class="dropdown-item" href="{% url 'profile_change' %}">Изменить личные данные</a>
                     <a class="dropdown-item" href="{% url 'password_change' %}">Изменить пароль</a>
                     <div class="dropdown-divider"></div>
@@ -52,7 +52,7 @@
        {% ifchanged rubric.super_rubric.pk %}
 
             <span class="nav-link root font-weight-bold">
-               Недвижимость
+
             {{ rubric.super_rubric.name }}
            </span>
 {% endifchanged %}

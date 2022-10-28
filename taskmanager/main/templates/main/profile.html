@@ -1,6 +1,7 @@
 {% extends 'main/base.html' %}
-
 {% load bootstrap4 %}
+{% load thumbnail %}
+{% load static %}
 
 {% block title %} Профиль пользователя {% endblock %}
 
@@ -11,12 +12,40 @@
    {% else %}
        <p>Здравствуйте! </p>
    {% endif %}
-   <h3>Ваши объявления</h3>
-    <p><a href="{% url 'profile_bb_add' %}">Добавить объявление</a> </p>
+   <h3>Ваши Заявки</h3>
+   {{ rubric }}
+    <p><a href="{% url 'profile_bb_add' %}">Добавить заявку</a> </p>
+
+{% block searchform %}
+{% endblock %}
+
+    <h2 class="mb-2">{{ rubric }}</h2>
+    </div>
+    {% if bbs %}
+        <ul class="list-unstyled">
+            {% for bb in bbs %}
+                <li class="media my-5 p-3 border">
+                    {% url 'detail' rubric_pk=rubric.pk pk=bb.pk as url %}
+                    <a href="{{ url }}{{ all }}">
+                        {% if bb.image %}
+                            <img class="mr-3" src="{% thumbnail bb.image 'default' %}">
+                        {% else %}
+                            <img class="mr-3" src="{% static 'rubric/empty.jpg' %}">
+                        {% endif %}
+                    </a>
+                    <div class="media-body">
+                        <h3><a href="{{ url }}{{ all }}">{{ bb.title }}</a></h3>
+                        <div>{{ bb.content }}</div>
+                        <p class="text-right font-weight-bold">{{ bb.price }}</p>
+                        <p class="text-right font-italic">{{ bb.created_at }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}
 
 {% block task %}
     <img class="img"  src="https://static.wikia.nocookie.net/disney/images/3/39/%D0%9C%D0%B0%D0%B9%D0%BA_%D0%B2_%D0%B4%D0%B5%D1%82%D1%81%D1%82%D0%B2%D0%B5.png/revision/latest?cb=20151026165157&path-prefix=ru" alt="img">
-        <h5 class="mr-md-auto p-2">Ваш профиль</h5>
+        <h5 class="mr-md-auto p-2">Ваш профиль </h5>
         {% endblock %}
-
