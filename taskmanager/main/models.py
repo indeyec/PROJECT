@@ -19,6 +19,8 @@ class Task(models.Model):
 
 class AdvUser(AbstractUser):
     middle_name = models.CharField('Отчество', max_length=50)
+    role = models.CharField(max_length=254, verbose_name='Роль',
+                            choices=(('admin', 'Администратор'), ('user', 'Пользователь')), default='user')
 
     def delete(self, *args, **kwargs):
         for bb in self.bb_set.all():

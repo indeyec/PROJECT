@@ -20,7 +20,9 @@ from .models import SubRubric, Bb
 
 
 def index(request):
-    return render(request, 'main/index.html')
+    bbs = Bb.objects.filter(is_active=True)[:4]
+    context = {'bbs': bbs}
+    return render(request, 'main/index.html', context)
 
 
 def about(request):
@@ -127,13 +129,10 @@ def detail(request, rubric_pk, pk):
    bb = get_object_or_404(Bb, pk=pk)
    ais = bb.additionalimage_set.all()
    context = {'bb': bb, 'ais': ais}
-   return render(request, 'main/detail.html', context)
+   return render(request, 'rubric/detail.html', context)
 
 
-def index(request):
-   bbs = Bb.objects.filter(is_active=True)[:4]
-   context = {'bbs': bbs}
-   return render(request, 'main/index.html', context)
+
 
 
 @login_required
@@ -165,7 +164,7 @@ def profile_bb_add(request):
 def profile_bb_change(request, pk):
    bb = get_object_or_404(Bb, pk=pk)
    if not request.user.is_author(bb):
-       return redirect('main:profile')
+       return redirect('main/profile')
    if request.method == 'POST':
        form = BbForm(request.POST, request.FILES, instance=bb)
        if form.is_valid():
@@ -175,23 +174,23 @@ def profile_bb_change(request, pk):
                formset.save()
                messages.add_message(request, messages.SUCCESS,
                                     'Объявление изменено')
-               return redirect('main:profile')
+               return redirect('main/profile')
    else:
        form = BbForm(instance=bb)
        formset = AIFormSet(instance=bb)
    context = {'form': form, 'formset': formset}
-   return render(request, 'main/profile_bb_change.html', context)
+   return render(request, 'rubric/profile_bb_change.html', context)
 
 @login_required
 def profile_bb_delete(request, pk):
    bb = get_object_or_404(Bb, pk=pk)
    if not request.user.is_author(bb):
-       return redirect('main:profile')
+       return redirect('main/profile')
    if request.method == 'POST':
        bb.delete()
        messages.add_message(request, messages.SUCCESS,
                             'Объявление удалено')
-       return redirect('main:profile')
+       return redirect('main/profile')
    else:
        context = {'bb': bb}
-       return render(request, 'main/profile_bb_delete.html', context)
+       return render(request, 'rubric/profile_bb_delete.html', context)
