@@ -52,6 +52,7 @@ def register(request):
 #     return render(request, 'main/login.html')
 class LoginView(LoginView):
     template_name = 'main/login.html'
+    success_url = reverse_lazy('main/profile')
 
 
 @login_required
@@ -68,7 +69,7 @@ class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin,
     model = AdvUser
     template_name = 'main/change_user_info.html'
     form_class = ChangeUserInfoForm
-    success_url = reverse_lazy('main:profile')
+    success_url = reverse_lazy('main/profile')
     success_message = 'Личные данные пользователя изменены'
 
     def dispatch(self, request, *args, **kwargs):
@@ -84,14 +85,14 @@ class ChangeUserInfoView(SuccessMessageMixin, LoginRequiredMixin,
 class PasswordChangeView(SuccessMessageMixin, LoginRequiredMixin,
                          PasswordChangeView):
     template_name = 'main/password_change.html'
-    success_url = reverse_lazy('main:profile')
+    success_url = reverse_lazy('main/profile')
     success_message = 'Пароль пользователя изменен'
 
 
 class DeleteUserView(LoginRequiredMixin, DeleteView):
     model = AdvUser
     template_name = 'main/delete_user.html'
-    success_url = reverse_lazy('main:index')
+    success_url = reverse_lazy('main/index')
 
     def dispatch(self, request, *args, **kwargs):
         self.user_id = request.user.pk
@@ -162,7 +163,9 @@ def profile_bb_add(request):
 def profile_bb_change(request, pk):
     bb = get_object_or_404(Bb, pk=pk)
     if not request.user.is_author(bb):
-        return redirect('main:profile')
+        messages.add_message(request, messages.SUCCESS,
+                             'Это не ваша заявка ее трогать нельзя')
+        return redirect('profile')
     if request.method == 'POST':
         form = BbForm(request.POST, request.FILES, instance=bb)
         if form.is_valid():
@@ -181,7 +184,9 @@ def profile_bb_change(request, pk):
 def profile_bb_delete(request, pk):
     bb = get_object_or_404(Bb, pk=pk)
     if not request.user.is_author(bb):
-        return redirect('main/profile')
+        messages.add_message(request, messages.SUCCESS,
+                             'Чужое!!!! , трогать нельзя')
+        return redirect('profile')
     if request.method == 'POST':
         bb.delete()
         messages.add_message(request, messages.SUCCESS,
