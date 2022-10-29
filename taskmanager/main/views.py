@@ -19,7 +19,9 @@ from .models import SubRubric, Bb
 
 
 def index(request):
-    return render(request, 'main/index.html')
+    bbs = Bb.objects.filter(status="confirmed")[:4]
+    context = {'bbs': bbs}
+    return render(request, 'main/index.html', context)
 
 
 def profile(request):
@@ -145,17 +147,14 @@ def profile_bb_add(request):
     if request.method == 'POST':
         form = BbForm(request.POST, request.FILES)
         if form.is_valid():
+            form.instance.author_id = request.user.pk
             bb = form.save()
-            formset = AIFormSet(request.POST, request.FILES, instance=bb)
-            if formset.is_valid():
-                formset.save()
-                messages.add_message(request, messages.SUCCESS,
-                                     'Объявление добавлено')
-                return redirect('profile')
+            messages.add_message(request, messages.SUCCESS,
+                                    'Заявка создана')
+            return redirect('profile')
     else:
         form = BbForm(initial={'author': request.user.pk})
-        formset = AIFormSet()
-    context = {'form': form, 'formset': formset}
+    context = {'form': form}
     return render(request, 'rubric/profile_bb_add.html', context)
 
 
@@ -168,16 +167,13 @@ def profile_bb_change(request, pk):
         form = BbForm(request.POST, request.FILES, instance=bb)
         if form.is_valid():
             bb = form.save()
-            formset = AIFormSet(request.POST, request.FILES, instance=bb)
-            if formset.is_valid():
-                formset.save()
-                messages.add_message(request, messages.SUCCESS,
-                                     'Объявление изменено')
-                return redirect('main:profile')
+            messages.add_message(request, messages.SUCCESS,
+                                     'Заявка изменена')
+            return redirect('profile')
     else:
         form = BbForm(instance=bb)
-        formset = AIFormSet(instance=bb)
-    context = {'form': form, 'formset': formset}
+
+    context = {'form': form}
     return render(request, 'rubric/profile_bb_change.html', context)
 
 
@@ -189,7 +185,7 @@ def profile_bb_delete(request, pk):
     if request.method == 'POST':
         bb.delete()
         messages.add_message(request, messages.SUCCESS,
-                             'Объявление удалено')
+                             'Заявка удалена')
         return redirect('profile')
     else:
         context = {'bb': bb}

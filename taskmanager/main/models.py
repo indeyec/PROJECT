@@ -91,8 +91,6 @@ class Bb(models.Model):
     rubric = models.ForeignKey(SubRubric, on_delete=models.PROTECT, verbose_name='Рубрика')
     title = models.CharField(max_length=40, verbose_name='Товар')
     content = models.TextField(verbose_name='Описание')
-    price = models.FloatField(default=0, verbose_name='Цена')
-    contacts = models.TextField(verbose_name='Контакты')
     image = models.ImageField(blank=True, upload_to=get_timestamp_path, verbose_name='Изображение')
     author = models.ForeignKey(AdvUser, on_delete=models.CASCADE, verbose_name='Автор объявления')
     is_active = models.BooleanField(default=True, db_index=True, verbose_name='Выводить в списке?')
@@ -101,11 +99,10 @@ class Bb(models.Model):
                               choices=STATUS_CHOISES,
                               default='new')
 
-
-def delete(self, *args, **kwargs):
-    for ai in self.additionalimage_set.all():
-        ai.delete()
-    super().delete(*args, **kwargs)
+    def delete(self, *args, **kwargs):
+        for ai in self.additionalimage_set.all():
+            ai.delete()
+        super().delete(*args, **kwargs)
 
 
 class Meta:

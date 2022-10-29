@@ -53,9 +53,10 @@ class SearchForm(forms.Form):
 
 
 class BbForm(forms.ModelForm):
+
    class Meta:
        model = Bb
-       fields = '__all__'
+       fields = ('rubric', 'title', 'content', 'image')
        widgets = {'author': forms.HiddenInput}
 
 
