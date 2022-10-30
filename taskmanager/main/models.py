@@ -99,8 +99,8 @@ class SubRubric(Rubric):
 class Bb(models.Model):
     STATUS_CHOISES = [
         ('new', 'новый'),
-        ('confirmed', 'подвтрежденный'),
-        ('canceled', 'отмененный')
+        ('confirmed', 'Принято в работу'),
+        ('canceled', 'Выполнено')
     ]
     rubric = models.ForeignKey(SubRubric, on_delete=models.PROTECT, verbose_name='Рубрика')
     title = models.CharField(max_length=40, verbose_name='Товар')

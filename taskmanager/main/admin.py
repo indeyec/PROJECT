@@ -30,8 +30,8 @@ class AdditionalImageInline(admin.TabularInline):
 
 class BbAdmin(admin.ModelAdmin):
    list_display = ('rubric', 'title', 'content', 'author', 'created_at')
-   fields = (('rubric', 'author'), 'title', 'content', 'price', 'status',
-             'contacts', 'image', 'is_active')
+   fields = (('rubric', 'author'), 'title', 'content',  'status',
+              'image',)
    inlines = (AdditionalImageInline,)
 
 admin.site.register(Bb, BbAdmin)
