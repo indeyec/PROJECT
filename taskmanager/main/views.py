@@ -16,7 +16,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from .forms import SearchForm
 from .models import SubRubric, Bb
-
+from django.db.models import Count
 
 def index(request):
     bbs = Bb.objects.filter(status="confirmed")[:4]
@@ -163,7 +163,7 @@ def profile_bb_add(request):
 def profile_bb_change(request, pk):
     bb = get_object_or_404(Bb, pk=pk)
     if not request.user.is_author(bb):
-        messages.add_message(request, messages.SUCCESS,
+        messages.error(request,
                              'Это не ваша заявка ее трогать нельзя')
         return redirect('profile')
     if request.method == 'POST':
@@ -184,11 +184,11 @@ def profile_bb_change(request, pk):
 def profile_bb_delete(request, pk):
     bb = get_object_or_404(Bb, pk=pk)
     if not request.user.is_author(bb):
-        messages.add_message(request, messages.SUCCESS,
-                             'Чужое!!!! , трогать нельзя')
+        messages.error(request,
+                             'Чужое!!!!, трогать нельзя')
         return redirect('profile')
     if not hasattr(Bb.STATUS_CHOISES, 'new'):
-        messages.add_message(request, messages.SUCCESS,
+        messages.error(request,
                              'Вы не можете редактировать это объявление ведь его статус изменен')
         return redirect('profile')
     if request.method == 'POST':
