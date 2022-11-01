@@ -20,9 +20,8 @@ from django.db.models import Count
 
 def index(request):
     bbs = Bb.objects.filter(status="confirmed")[:4]
-    conter = Bb.objects.filter(status='confirmed').count()
-    print(conter)
-    context = {'bbs': bbs}
+    counter = Bb.objects.filter(status='confirmed').count()
+    context = {'bbs': bbs, 'counter': counter}
     return render(request, 'main/index.html', context)
 
 
