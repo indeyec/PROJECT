@@ -20,6 +20,8 @@ from django.db.models import Count
 
 def index(request):
     bbs = Bb.objects.filter(status="confirmed")[:4]
+    conter = Bb.objects.filter(status='confirmed').count()
+    print(conter)
     context = {'bbs': bbs}
     return render(request, 'main/index.html', context)
 
@@ -187,10 +189,7 @@ def profile_bb_delete(request, pk):
         messages.error(request,
                              'Чужое!!!!, трогать нельзя')
         return redirect('profile')
-    if not hasattr(Bb.STATUS_CHOISES, 'new'):
-        messages.error(request,
-                             'Вы не можете редактировать это объявление ведь его статус изменен')
-        return redirect('profile')
+
     if request.method == 'POST':
         bb.delete()
         messages.add_message(request, messages.SUCCESS,

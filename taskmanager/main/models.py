@@ -112,6 +112,7 @@ class Bb(models.Model):
     status = models.CharField(max_length=254, verbose_name='Статус',
                               choices=STATUS_CHOISES,
                               default='new')
+    counter = models.IntegerField(null=True, blank=True, verbose_name='счетчик')
 
     def delete(self, *args, **kwargs):
         for ai in self.additionalimage_set.all():
