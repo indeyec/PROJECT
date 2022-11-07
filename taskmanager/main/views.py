@@ -188,7 +188,6 @@ def profile_bb_delete(request, pk):
         messages.error(request,
                              'Чужое!!!!, трогать нельзя')
         return redirect('profile')
-
     if request.method == 'POST':
         bb.delete()
         messages.add_message(request, messages.SUCCESS,
