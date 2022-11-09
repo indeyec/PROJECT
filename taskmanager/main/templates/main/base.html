@@ -48,21 +48,7 @@
 
         <nav class="col-md-auto nav flex-column">
             <a style="color:black;font-size: 20px" class="nav-link root" href="{% url 'home' %}">Главная</a>
-            {% for rubric in rubrics %}
-       {% ifchanged rubric.super_rubric.pk %}
 
-            <span class="nav-link root font-weight-bold">
-
-            {{ rubric.super_rubric.name }}
-           </span>
-{% endifchanged %}
-
-       <a class="nav-link" href="{% url 'by_rubric' pk=rubric.pk %}">
-       {{ rubric.name }}
-       </a>
-
-
-        {% endfor %}
         <a style="color:black;font-size: 20px" class="nav-link" href="{% url 'about' %}">О нас</a>
         </nav>
 
