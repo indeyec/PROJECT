@@ -124,7 +124,7 @@ class Bb(models.Model):
         super().delete(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('detail', args=[str(self.id)])
+        return reverse('rubric/detail.html', args=[str(self.id)])
 
     def get_status_name(self):
         for status in self.STATUS_CHOISES:
