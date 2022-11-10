@@ -1,3 +1,5 @@
+from audioop import reverse
+
 from django.dispatch import Signal
 from django.db.models.signals import post_save
 from django.contrib.auth.models import AbstractUser
@@ -121,11 +123,22 @@ class Bb(models.Model):
             ai.delete()
         super().delete(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('detail', args=[str(self.id)])
 
-class Meta:
-    verbose_name_plural = 'Объявл'
-    verbose_name = 'Объявление'
-    ordering = ['-created_at']
+    def get_status_name(self):
+        for status in self.STATUS_CHOISES:
+            if status[0] == self.status:
+                return status[1]
+        return 'Не задан'
+
+    def str(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'Объявл'
+        verbose_name = 'Объявление'
+        ordering = ['-created_at']
 
 
 class AdditionalImage(models.Model):

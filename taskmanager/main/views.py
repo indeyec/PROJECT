@@ -1,3 +1,4 @@
+from django.views import  generic
 from django.contrib.auth.views import LoginView
 from .forms import UserRegisterForm, BbForm, AIFormSet
 from django.contrib.auth.decorators import login_required
@@ -7,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from .forms import ChangeUserInfoForm
-from .models import AdvUser
+from .models import AdvUser, Rubric
 from django.contrib.auth.views import PasswordChangeView
 from django.views.generic import UpdateView, CreateView, DeleteView
 from django.contrib.auth import logout
@@ -16,7 +17,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from .forms import SearchForm
 from .models import SubRubric, Bb
-from django.db.models import Count
+
 
 def index(request):
     bbs = Bb.objects.filter(status="confirmed")[:4]
@@ -26,13 +27,39 @@ def index(request):
 
 
 def profile(request):
-    bbs = Bb.objects.filter(is_active=True)[:4]
+    bbs = Bb.objects.filter(is_active=True)
     context = {'bbs': bbs}
     return render(request, 'main/profile.html', context)
 
 
 def about(request):
     return render(request, 'main/about.html')
+
+class LoanedOrdersByUserListView(LoginRequiredMixin, generic.ListView):
+    model = Bb
+    template_name = 'main/profile.html'
+    paginate_by = 10
+    status = None
+
+    def get(self, request, args, **kwargs):
+        # print(request.GET.get('status'))
+        if request.GET.get('status'):
+            self.status = request.GET.get('status')
+        return super().get(request, args, kwargs)
+
+    def get_context_data(self, kwargs):
+        # В первую очередь получаем базовую реализацию контекста
+        context = super(LoanedOrdersByUserListView, self).get_context_data(**kwargs)
+        # Добавляем новую переменную к контексту и инициализируем её некоторым значением
+        context['status_list'] = Bb.STATUS_CHOISES
+        # print(Order.LOAN_STATUS)
+        return context
+
+    def get_queryset(self):
+        if self.status:
+            return Bb.objects.filter(customer_order=self.request.user, status=self.status)
+        return Bb.objects.filter(customer_order=self.request.user).order_by('-day_add')
+
 
 
 def register(request):
