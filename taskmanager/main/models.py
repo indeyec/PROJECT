@@ -33,7 +33,8 @@ class AdvUser(AbstractUser):
         RegexValidator(regex=r'[а-яА-ЯёЁ]+$', message='Отвество введено не правильно',
                        code='invalid_middle_name'), ])
     role = models.CharField(max_length=254, verbose_name='Роль',
-                            choices=(('admin', 'Администратор'), ('user', 'Пользователь'), ('author', 'Автор')), default='user')
+                            choices=(('admin', 'Администратор'), ('user', 'Пользователь'), ('author', 'Автор')),
+                            default='user')
     username = models.CharField(max_length=20, verbose_name="Имя пользователя", unique=True, validators=[
         RegexValidator(regex=r'^[a-z]+$', message='Имя пользователя введено не правильно',
                        code='invalid_username'), ])
@@ -139,6 +140,13 @@ class Bb(models.Model):
         verbose_name_plural = 'Объявл'
         verbose_name = 'Объявление'
         ordering = ['-created_at']
+
+
+class Status(models.Model):
+    name = models.CharField(max_length=254, verbose_name='Наименование', blank=False)
+
+    def __str__(self):
+        return self.name
 
 
 class AdditionalImage(models.Model):

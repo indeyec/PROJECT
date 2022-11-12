@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from .forms import ChangeUserInfoForm
-from .models import AdvUser, Rubric
+from .models import AdvUser, Rubric, Status
 from django.contrib.auth.views import PasswordChangeView
 from django.views.generic import UpdateView, CreateView, DeleteView
 from django.contrib.auth import logout
@@ -26,39 +26,26 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
+
+
+
 def profile(request):
-    bbs = Bb.objects.filter(is_active=True)
-    context = {'bbs': bbs}
-    return render(request, 'main/profile.html', context)
+    status = request.GET.get('status')
+    if status:
+        bbs = Bb.objects.filter(count__gte=1, status=status)
+    else:
+        bbs = Bb.objects.filter(count__gte=1)
+
+    return render(request, 'main/profile.html', context={
+        'bbs': bbs,
+        'status': Status.object.all()
+    })
 
 
 def about(request):
     return render(request, 'main/about.html')
 
-class LoanedOrdersByUserListView(LoginRequiredMixin, generic.ListView):
-    model = Bb
-    template_name = 'main/profile.html'
-    paginate_by = 10
-    status = None
 
-    def get(self, request, args, **kwargs):
-        # print(request.GET.get('status'))
-        if request.GET.get('status'):
-            self.status = request.GET.get('status')
-        return super().get(request, args, kwargs)
-
-    def get_context_data(self, kwargs):
-        # В первую очередь получаем базовую реализацию контекста
-        context = super(LoanedOrdersByUserListView, self).get_context_data(**kwargs)
-        # Добавляем новую переменную к контексту и инициализируем её некоторым значением
-        context['status_list'] = Bb.STATUS_CHOISES
-        # print(Order.LOAN_STATUS)
-        return context
-
-    def get_queryset(self):
-        if self.status:
-            return Bb.objects.filter(customer_order=self.request.user, status=self.status)
-        return Bb.objects.filter(customer_order=self.request.user).order_by('-day_add')
 
 
 

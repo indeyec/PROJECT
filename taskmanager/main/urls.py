@@ -18,7 +18,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('', views.index, name='home'),
-    path('accounts/profile/', views.LoanedOrdersByUserListView.as_view(), name='status'),
+
     path('accounts/profile/', profile, name='profile'),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('accounts/profile/change/', ChangeUserInfoView.as_view(), name='profile_change'),
