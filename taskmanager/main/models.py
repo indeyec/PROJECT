@@ -1,11 +1,7 @@
 from audioop import reverse
-
-from django.dispatch import Signal
-from django.db.models.signals import post_save
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from .utilities import get_timestamp_path
-from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
 
@@ -107,6 +103,7 @@ class Bb(models.Model):
     ]
     rubric = models.ForeignKey(SubRubric, on_delete=models.PROTECT, verbose_name='Рубрика')
     title = models.CharField(max_length=40, verbose_name='Товар')
+    # count = models.IntegerField(max_length='Количество', blank='false', default='1')
     content = models.TextField(verbose_name='Описание')
     image = models.ImageField(blank=True, upload_to=get_timestamp_path, verbose_name='Изображение')
     author = models.ForeignKey(AdvUser, on_delete=models.CASCADE, verbose_name='Автор объявления')

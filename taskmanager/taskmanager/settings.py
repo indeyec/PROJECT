@@ -139,3 +139,5 @@ THUMBNAIL_ALIASES = {
 }
 
 THUMBNAIL_BASEDIR = 'thumbnails'
+
+LOGIN_REDIRECT_URL = '/profile'

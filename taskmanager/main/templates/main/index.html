@@ -8,14 +8,15 @@
 {% endblock %}
 
 {% block content %}
-<h2 class="mb-2">Последние 4 выполненных заявки:</h2>
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+<h2 class="rut">Последние 4 выполненных заявки:</h2>
     <p class="text-right font-italic">Количество заявок, находящихся в статусе «Принято в работу»: {{ counter }}</p>
-    </div>
+
 
     {% if bbs %}
         <ul class="list-unstyled">
             {% for bb in bbs %}
-                <li class="media my-5 p-3 border"style="width:1000px;margin-left:480px;">
+                <li class="media my-5 p-3 border"style="width:600px;">
                     {% url 'detail' rubric_pk=rubric.pk pk=bb.id as url %}
                     <a href="{{ url }}{{ all }}">
                         {% if bb.image %}

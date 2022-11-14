@@ -19,40 +19,10 @@
 <p>
     <div>Фильтр </div>
 <a href="{% url 'profile' %}">Все</a>
-{% for bb in bbs %}
-<a href="{% url 'profile' %}?status={{ bb.pk}}">{{ bb.status }}</a>
+{% for item in status %}
+<a href="{% url 'profile' %}?status={{ item.pk }}">{{ item.name }}</a>
 {% endfor %}
 </p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--    <div class="link_filter"><p>Фильтр по статусу:</p>-->
-<!--    {% if not request.GET.status %}-->
-<!--        <p>Все</p>-->
-<!--    {% else %}-->
-<!--        <div class="link_filter">-->
-<!--        <a href="{% url 'status' %}">Все</a>-->
-<!--    {% endif %}-->
-<!--{% for item in status_list %}-->
-<!--    {% if request.GET.status != item.0 %}-->
-<!--        <a href="{% url 'status' %}?status={{item.0}}"> ({{item.1}}) </a>-->
-<!--    {% else %}-->
-<!--        {{item.status}}-->
-<!--    {% endif %}-->
-<!--{% endfor %}-->
-<!--</div>-->
 
     <p><a href="{% url 'profile_bb_add' %}">Добавить заявку</a> </p>
     {% if bbs %}

@@ -1,4 +1,4 @@
-from django.views import  generic
+from django.views import generic
 from django.contrib.auth.views import LoginView
 from .forms import UserRegisterForm, BbForm, AIFormSet
 from django.contrib.auth.decorators import login_required
@@ -26,27 +26,8 @@ def index(request):
     return render(request, 'main/index.html', context)
 
 
-
-
-
-def profile(request):
-    status = request.GET.get('status')
-    if status:
-        bbs = Bb.objects.filter(count__gte=1, status=status)
-    else:
-        bbs = Bb.objects.filter(count__gte=1)
-
-    return render(request, 'main/profile.html', context={
-        'bbs': bbs,
-        'status': Status.object.all()
-    })
-
-
 def about(request):
     return render(request, 'main/about.html')
-
-
-
 
 
 def register(request):
@@ -63,16 +44,12 @@ def register(request):
     return render(request, 'main/register.html', {"form": form})
 
 
-# def login(request):
-#     return render(request, 'main/login.html')
+
 class LoginView(LoginView):
     template_name = 'main/login.html'
     success_url = reverse_lazy('main/profile')
 
 
-@login_required
-def profile(request):
-    return render(request, 'main/profile.html')
 
 
 class LogoutView(LoginRequiredMixin, LogoutView):
@@ -153,9 +130,16 @@ def detail(request, rubric_pk, pk):
 
 @login_required
 def profile(request):
-    bbs = Bb.objects.filter(author=request.user.pk)
-    context = {'bbs': bbs}
-    return render(request, 'main/profile.html', context)
+    status = request.GET.get('status')
+    if status:
+        bbs = Bb.objects.filter(count__gte=1, status=status, author=request.user.pk)
+    else:
+        bbs = Bb.objects.filter(count__gte=1)
+
+    return render(request, 'main/profile.html', context={
+        'status': Bb.STATUS_CHOISES,
+        'bbs': bbs
+    })
 
 
 @login_required
@@ -166,7 +150,7 @@ def profile_bb_add(request):
             form.instance.author_id = request.user.pk
             bb = form.save()
             messages.add_message(request, messages.SUCCESS,
-                                    'Заявка создана')
+                                 'Заявка создана')
             return redirect('profile')
     else:
         form = BbForm(initial={'author': request.user.pk})
@@ -179,14 +163,14 @@ def profile_bb_change(request, pk):
     bb = get_object_or_404(Bb, pk=pk)
     if not request.user.is_author(bb):
         messages.error(request,
-                             'Это не ваша заявка ее трогать нельзя')
+                       'Это не ваша заявка ее трогать нельзя')
         return redirect('profile')
     if request.method == 'POST':
         form = BbForm(request.POST, request.FILES, instance=bb)
         if form.is_valid():
             bb = form.save()
             messages.add_message(request, messages.SUCCESS,
-                                     'Заявка изменена')
+                                 'Заявка изменена')
             return redirect('profile')
     else:
         form = BbForm(instance=bb)
@@ -200,7 +184,7 @@ def profile_bb_delete(request, pk):
     bb = get_object_or_404(Bb, pk=pk)
     if not request.user.is_author(bb):
         messages.error(request,
-                             'Чужое!!!!, трогать нельзя')
+                       'Чужое!!!!, трогать нельзя')
         return redirect('profile')
     if request.method == 'POST':
         bb.delete()
