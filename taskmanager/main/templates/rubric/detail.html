@@ -3,13 +3,13 @@
 
 {% block content %}
     <div class="container-fluid mt-3">
-        <div class="row">
+        <div class="row row2">
             {% if bb.image %}
                 <div class="col-md-auto">
                     <img src="{{ bb.image.url }}" class="main-image">
                 </div>
             {% endif %}
-            <div class="col">
+            <div class="coloo">
                 <h2>{{ bb.title }}</h2>
                 <p>{{ bb.content }}</p>
                 <p class="text-right font-italic">Cтатус {{ bb.status }}</p>
@@ -26,17 +26,32 @@
             {% endfor %}
         </div>
     {% endif %}
+    <div class="qwe">
     <p><a href="{% url 'by_rubric' pk=bb.rubric.pk %}{{ all }}">Назад</a></p>
-    <div class="media-body">
-        Рубрика: {{ bb.rubric }}
-        <p class="text-right mt-2">
-            {% if user.is_authenticated %}
+         <div class="media-body">
+            Рубрика: {{ bb.rubric }}
+            <p class="text-right mt-2">
+                {% if user.is_authenticated %}
 
-                <a href="{% url 'profile_bb_change' pk=bb.pk %}">Исправить заявку</a>
-                {% if bb.status == 'new' %}
-                <a href="{% url 'profile_bb_delete' pk=bb.pk %}">Удалить</a>
-                </p>
-                </div>
+                    <a href="{% url 'profile_bb_change' pk=bb.pk %}">Исправить заявку</a>
+                    {% if bb.status == 'new' %}
+                    <a href="{% url 'profile_bb_delete' pk=bb.pk %}">Удалить</a>
+    </p>
+         </div>
+     </div>
             {% endif %}
     {% endif %}
+<div class="wdqwqdq">sadasdasda</div>
 {% endblock %}
+
+{% block css %}
+    <footer class="foo">
+		<div class="drop"></div>
+		<div class="about_me">
+			<img class="imges" src="https://i.pinimg.com/originals/a6/6f/29/a66f297794d3f99e18157a73d543d063.jpg" alt="#">
+			<h1 class="name">Username - INDEYEC</h1>
+			<a class="rederect" href="https://github.com/indeyec">My github</a>
+		</div>
+	</footer>
+{% endblock %}
+

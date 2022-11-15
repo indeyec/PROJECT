@@ -9,16 +9,17 @@
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'main/style.css' %}">
-<h2 class="rut">Последние 4 выполненных заявки:</h2>
-    <p class="text-right font-italic">Количество заявок, находящихся в статусе «Принято в работу»: {{ counter }}</p>
-
+    <div class="content">
+        <h2 class="rut">Последние 4 выполненных заявки:</h2>
+        <p class="text-right font-italic">Количество заявок, находящихся в статусе «Принято в работу»: {{ counter }}</p>
+    </div>
 
     {% if bbs %}
         <ul class="list-unstyled">
             {% for bb in bbs %}
-                <li class="media my-5 p-3 border"style="width:600px;">
+                <li class="blocks">
                     {% url 'detail' rubric_pk=rubric.pk pk=bb.id as url %}
-                    <a href="{{ url }}{{ all }}">
+                    <a class="text_ww" href="{{ url }}{{ all }}">
                         {% if bb.image %}
                             <img class="mr-3" src="{% thumbnail bb.image 'default' %}">
                         {% else %}
@@ -26,10 +27,10 @@
                         {% endif %}
                     </a>
                     <div class="media-body">
-                        <h3><a href="{{ url }}/{{bb.rubric.id}}/{{ bb.pk }}">{{ bb.title }}</a></h3>
-                        <div>{{ bb.content }}</div>
-                        <p class="text-right font-italic">Cтатус {{ bb.status }}</p>
-                        <p class="text-right font-italic">{{ bb.created_at }}</p>
+                        <h3><a class="text_ww" href="{{ url }}/{{bb.rubric.id}}/{{ bb.pk }}">{{ bb.title }}</a></h3>
+                        <div class="text_ww">{{ bb.content }}</div>
+                        <p class="text_as">Cтатус {{ bb.status }}</p>
+                        <p class="text_as">{{ bb.created_at }}</p>
                     </div>
                 </li>
             {% endfor %}
@@ -38,8 +39,18 @@
 {% endblock %}
 
 {% block task %}
-    <img class="img" src="https://static.wikia.nocookie.net/disney/images/3/39/%D0%9C%D0%B0%D0%B9%D0%BA_%D0%B2_%D0%B4%D0%B5%D1%82%D1%81%D1%82%D0%B2%D0%B5.png/revision/latest?cb=20151026165157&path-prefix=ru" alt="img">
-    <h5 style="color:#c919ef;font-size: 23px" class="mr-md-auto p-2">Дизайн интерьера Mike</h5>
+    <h5 class="logo">Дизайн интерьера</h5>
 {% endblock %}
 
+{% block css %}
+    <footer>
+		<div class="drop"></div>
+		<div class="about me">
+			<img class="imges" src="https://i.pinimg.com/originals/a6/6f/29/a66f297794d3f99e18157a73d543d063.jpg" alt="#">
+			<h1 class="name">Username - INDEYEC</h1>
 
+
+			<a class="rederect" href="https://github.com/indeyec">My github</a>
+		</div>
+	</footer>
+{% endblock %}

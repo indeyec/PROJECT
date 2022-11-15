@@ -1,4 +1,3 @@
-from django.views import generic
 from django.contrib.auth.views import LoginView
 from .forms import UserRegisterForm, BbForm, AIFormSet
 from django.contrib.auth.decorators import login_required
@@ -201,7 +200,6 @@ def profile_bb_delete(request, pk):
         messages.add_message(request, messages.SUCCESS,
                              'Заявка удалена')
         return redirect('profile')
-
     else:
         context = {'bb': bb}
         return render(request, 'rubric/profile_bb_delete.html', context)

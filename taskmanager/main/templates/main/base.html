@@ -1,5 +1,6 @@
 {% load static %}
 {% load bootstrap4 %}
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -14,43 +15,43 @@
 </head>
 <body>
 
-<div class="container-fluid">
+<div>
 
-    <div class="d-flex flex-column flex-md-row p-3 px-md-4 mb-3  bg-white border-bottom box-shadow">
+    <div class="container-fluid container-x">
         {% block task %}
 
         {% endblock %}
 
-        {% if user.is_authenticated %}
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true"
-                   aria-expanded="false">Профиль</a>
-                <div class="dropdown-menu">
 
-                    <a class="dropdown-item" href="{% url 'profile' %}">Мои Заявки</a>
-                    <a class="dropdown-item" href="{% url 'profile_change' %}">Изменить личные данные</a>
-                    <a class="dropdown-item" href="{% url 'password_change' %}">Изменить пароль</a>
+        {% if user.is_authenticated %}
+
+            <div class="header">
+            <a  class="link" href="{% url 'home' %}">Главная</a>
+            <a  class="link" href="{% url 'about' %}">О нас</a>
+                <a class="link " href="#" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">Профиль</a>
+                <div class="dropdown-menu link">
+                    <a class="navbar-brand nav_link" href="{% url 'profile' %}">Мои Заявки</a>
+                    <a class="navbar-brand nav_link" href="{% url 'profile_change' %}">Изменить личные данные</a>
+                    <a class="navbar-brand nav_link" href="{% url 'password_change' %}">Изменить пароль</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'logout' %}">Выйти</a>
+                    <a class="navbar-brand nav_link" href="{% url 'logout' %}">Выйти</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'profile_delete' %}">Удалить</a>
+                    <a class="navbar-brand nav_link" href="{% url 'profile_delete' %}">Удалить</a>
                 </div>
             </div>
+
+
         {% else %}
-            <div>
-            <a class="p-2 text-dark" href="{% url 'register' %}">Регистрация</a>
-            <a class="p-2 text-dark" href="{% url 'login' %}">Вход</a>
+            <div class="link">
+            <a  class="link" href="{% url 'home' %}">Главная</a>
+            <a class="link" href="{% url 'register' %}">Регистрация</a>
+            <a class="link" href="{% url 'login' %}">Вход</a>
             </div>
         {% endif %}
     </div>
-
-    <div class="row">
-
-        <nav class="col-md-auto nav flex-column">
-            <a style="color:black;font-size: 20px" class="nav-link root" href="{% url 'home' %}">Главная</a>
-
-        <a style="color:black;font-size: 20px" class="nav-link" href="{% url 'about' %}">О нас</a>
-        </nav>
+    <div class="long"></div>
+    <div class="row row2">
 
         <div class="container">
             {% bootstrap_messages %}
@@ -86,6 +87,10 @@
 </div>
 <div class="container">{% block contend %}{% endblock %}
 </div>
+
+{% block css %}
+
+{% endblock %}
 
 </body>
 </html>
