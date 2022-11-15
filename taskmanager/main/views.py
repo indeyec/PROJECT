@@ -191,11 +191,17 @@ def profile_bb_delete(request, pk):
         messages.error(request,
                        'Чужое!!!!, трогать нельзя')
         return redirect('profile')
+    print(bb.status)
+    if bb.status != 'new':
+        messages.add_message(request, messages.SUCCESS,
+                             'Вы не можете удалять это объявление, ведь его статус изменен')
+        return redirect('profile')
     if request.method == 'POST':
         bb.delete()
         messages.add_message(request, messages.SUCCESS,
                              'Заявка удалена')
         return redirect('profile')
+
     else:
         context = {'bb': bb}
         return render(request, 'rubric/profile_bb_delete.html', context)
