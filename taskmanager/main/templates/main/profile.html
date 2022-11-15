@@ -17,10 +17,10 @@
 
 
 <p>
-    <div>Фильтр </div>
+    <div>Фильтр по статусу</div>
 <a href="{% url 'profile' %}">Все</a>
 {% for item in status %}
-<a href="{% url 'profile' %}?status={{ item.pk }}">{{ item.name }}</a>
+<a href="{% url 'profile' %}?status={{ item.0 }}">{{ item.1 }}</a>
 {% endfor %}
 </p>
 

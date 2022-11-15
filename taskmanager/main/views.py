@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from .forms import ChangeUserInfoForm
-from .models import AdvUser, Rubric, Status
+from .models import AdvUser, Rubric
 from django.contrib.auth.views import PasswordChangeView
 from django.views.generic import UpdateView, CreateView, DeleteView
 from django.contrib.auth import logout
@@ -130,14 +130,19 @@ def detail(request, rubric_pk, pk):
 
 @login_required
 def profile(request):
+    STATUS_CHOISES = [
+        ('new', 'новый'),
+        ('confirmed', 'Принято в работу'),
+        ('canceled', 'Выполнено')
+    ]
     status = request.GET.get('status')
-    if status:
-        bbs = Bb.objects.filter(count__gte=1, status=status, author=request.user.pk)
-    else:
-        bbs = Bb.objects.filter(count__gte=1)
 
+    if status:
+        bbs = Bb.objects.filter(author=request.user.pk, status=status)
+    else:
+        bbs = Bb.objects.filter(author=request.user.pk)
     return render(request, 'main/profile.html', context={
-        'status': Bb.STATUS_CHOISES,
+        'status': STATUS_CHOISES,
         'bbs': bbs
     })
 

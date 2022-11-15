@@ -56,7 +56,7 @@ class Rubric(models.Model):
                                      verbose_name='Порядок')
     super_rubric = models.ForeignKey('SuperRubric',
                                      on_delete=models.PROTECT, null=True, blank=True,
-                                     verbose_name='Надрубрика')
+                                     verbose_name='Категория')
 
 
 class SuperRubricManager(models.Manager):
@@ -73,8 +73,8 @@ class SuperRubric(Rubric):
     class Meta:
         proxy = True
         ordering = ('order', 'name')
-        verbose_name = 'Надрубрика'
-        verbose_name_plural = 'Надрубрики'
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категория'
 
 
 class SubRubricManager(models.Manager):
@@ -91,8 +91,8 @@ class SubRubric(Rubric):
     class Meta:
         proxy = True
         ordering = ('super_rubric__order', 'super_rubric__name', 'order', 'name')
-        verbose_name = 'Подрубрика'
-        verbose_name_plural = 'Подрубрики'
+        verbose_name = 'Подкатегория'
+        verbose_name_plural = 'Подкатегория'
 
 
 class Bb(models.Model):
@@ -101,9 +101,8 @@ class Bb(models.Model):
         ('confirmed', 'Принято в работу'),
         ('canceled', 'Выполнено')
     ]
-    rubric = models.ForeignKey(SubRubric, on_delete=models.PROTECT, verbose_name='Рубрика')
+    rubric = models.ForeignKey(SubRubric, on_delete=models.PROTECT, verbose_name='Категория')
     title = models.CharField(max_length=40, verbose_name='Товар')
-    # count = models.IntegerField(max_length='Количество', blank='false', default='1')
     content = models.TextField(verbose_name='Описание')
     image = models.ImageField(blank=True, upload_to=get_timestamp_path, verbose_name='Изображение')
     author = models.ForeignKey(AdvUser, on_delete=models.CASCADE, verbose_name='Автор объявления')
@@ -134,16 +133,12 @@ class Bb(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural = 'Объявл'
-        verbose_name = 'Объявление'
+        verbose_name_plural = 'Заявки'
+        verbose_name = 'Заявки'
         ordering = ['-created_at']
 
 
-class Status(models.Model):
-    name = models.CharField(max_length=254, verbose_name='Наименование', blank=False)
 
-    def __str__(self):
-        return self.name
 
 
 class AdditionalImage(models.Model):
