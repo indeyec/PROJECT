@@ -193,7 +193,7 @@ def profile_bb_delete(request, pk):
         return redirect('profile')
     print(bb.status)
     if bb.status != 'new':
-        messages.add_message(request, messages.SUCCESS,
+        messages.add_message(request, messages.ERROR,
                              'Вы не можете удалять это объявление, ведь его статус изменен')
         return redirect('profile')
     if request.method == 'POST':
