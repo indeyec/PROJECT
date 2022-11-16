@@ -33,7 +33,7 @@ class AdditionalImageInline(admin.TabularInline):
 
 class BbAdmin(admin.ModelAdmin):
    form = OrderForm
-   list_display = ('rubric', 'title', 'content', 'author', 'created_at', 'imageses', 'commented',)
+   list_display = ('rubric', 'title', 'content', 'author', 'created_at', 'imageses',)
    fields = (('rubric', 'author'), 'title', 'content',  'status', 'image', 'imageses', 'commented',)
    inlines = (AdditionalImageInline,)
 

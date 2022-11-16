@@ -18,13 +18,13 @@
 
 <p>
     <div>Фильтр по статусу</div>
-<a href="{% url 'profile' %}">Все</a>
+<a style="color:rgba(201, 156,105);" href="{% url 'profile' %}">Все</a>
 {% for item in status %}
-<a href="{% url 'profile' %}?status={{ item.0 }}">{{ item.1 }}</a>
+<a style="color:rgba(201, 156,105);" href="{% url 'profile' %}?status={{ item.0 }}">{{ item.1 }}</a>
 {% endfor %}
 </p>
 
-    <p><a href="{% url 'profile_bb_add' %}">Добавить заявку</a> </p>
+    <p><a style="color:rgba(201, 156,105);" href="{% url 'profile_bb_add' %}">Добавить заявку</a> </p>
     {% if bbs %}
         <ul class="list-unstyled">
             {% for bb in bbs %}
@@ -38,7 +38,7 @@
                         {% endif %}
                     </a>
                     <div class="media-body">
-                        <h3><a href="{{ url }}/{{bb.rubric.id}}/{{ bb.pk }}">{{ bb.title }}</a></h3>
+                        <h3><a style="color:#631818;" href="{{ url }}/{{bb.rubric.id}}/{{ bb.pk }}">{{ bb.title }}</a></h3>
                         <div>{{ bb.content }}</div>
                         <p class="text-right font-italic">Cтатус {{ bb.status }}</p>
                         <p class="text-right font-italic">{{ bb.created_at }}</p>
@@ -59,10 +59,13 @@
 
 {% block css %}
     <footer>
-		<div class="drop"></div>
+		<div style="width: 100%;color: #000;margin-top: -260px;border-bottom: 4px solid rgb(245, 245, 245);" class="drop"></div>
 		<div class="about me">
-			<img class="imges" src="https://i.pinimg.com/originals/a6/6f/29/a66f297794d3f99e18157a73d543d063.jpg" alt="#">
-			<h1 class="name">Username - INDEYEC</h1>
+			<img style="width:170px;height:179px;margin-top:-5px" class="imges" src="https://i.pinimg.com/originals/a6/6f/29/a66f297794d3f99e18157a73d543d063.jpg" alt="#">
+			<h1 style="    font-size: 30px;
+    margin-left: 180px;
+    margin-top: -130px;
+}"class="name">Username - INDEYEC</h1>
 
 
 			<a class="rederect" href="https://github.com/indeyec">My github</a>
